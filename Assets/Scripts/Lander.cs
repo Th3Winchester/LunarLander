@@ -34,6 +34,12 @@ public class Lander : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision2D)
     {
+        if (!collision2D.gameObject.TryGetComponent(out LandingPad landingPad))
+        {
+            Debug.Log("Lander has crashed.");
+            return;
+        }
+
         float softLandingVelocityMagnitude = 2f;
         float relativeVelocityMagnitude = collision2D.relativeVelocity.magnitude;
         if (relativeVelocityMagnitude > softLandingVelocityMagnitude)
