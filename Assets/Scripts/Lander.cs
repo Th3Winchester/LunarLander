@@ -1,34 +1,40 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class Lander : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private Rigidbody2D LanderRigidBody2D;
+    public event EventHandler OnUpForce;
+    public event EventHandler OnBeforeForce;
+
+    private Rigidbody2D landerRigidBody2D;
 
     private void Awake()
     {
-        LanderRigidBody2D = GetComponent<Rigidbody2D>();
+        landerRigidBody2D = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
+        OnBeforeForce?.Invoke(this, EventArgs.Empty);
+        
         if (Keyboard.current.wKey.isPressed)
         {
             float force = 700f;
-            LanderRigidBody2D.AddForce(force * transform.up * Time.deltaTime);
+            landerRigidBody2D.AddForce(force * transform.up * Time.deltaTime);
+            OnUpForce?.Invoke(this, EventArgs.Empty);
         }
 
         if (Keyboard.current.aKey.isPressed)
         {
             float turnSpeed = +100f;
-            LanderRigidBody2D.AddTorque(turnSpeed * Time.deltaTime);
+            landerRigidBody2D.AddTorque(turnSpeed * Time.deltaTime);
         }
 
         if (Keyboard.current.dKey.isPressed)
         {
             float turnSpeed = -100f;
-            LanderRigidBody2D.AddTorque(turnSpeed * Time.deltaTime);
+            landerRigidBody2D.AddTorque(turnSpeed * Time.deltaTime);
         }
     }
 
