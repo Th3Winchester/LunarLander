@@ -5,9 +5,12 @@ using System;
 public class Lander : MonoBehaviour
 {
     public event EventHandler OnUpForce;
+    public event EventHandler OnLeftForce;
+    public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
 
     private Rigidbody2D landerRigidBody2D;
+    private float fuelAmount = 10f;
 
     private void Awake()
     {
@@ -17,7 +20,21 @@ public class Lander : MonoBehaviour
     private void FixedUpdate()
     {
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
-        
+
+        Debug.Log("Fuel Amount: " + fuelAmount);
+        if (fuelAmount <= 0)
+        {
+            // No fuel
+            return;
+        }
+
+        if (Keyboard.current.wKey.isPressed ||
+            Keyboard.current.aKey.isPressed ||
+            Keyboard.current.dKey.isPressed)
+        {
+            ConsumeFuel();
+        }
+
         if (Keyboard.current.wKey.isPressed)
         {
             float force = 700f;
@@ -29,12 +46,14 @@ public class Lander : MonoBehaviour
         {
             float turnSpeed = +100f;
             landerRigidBody2D.AddTorque(turnSpeed * Time.deltaTime);
+            OnLeftForce?.Invoke(this, EventArgs.Empty);
         }
 
         if (Keyboard.current.dKey.isPressed)
         {
             float turnSpeed = -100f;
             landerRigidBody2D.AddTorque(turnSpeed * Time.deltaTime);
+            OnRightForce?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -77,5 +96,22 @@ public class Lander : MonoBehaviour
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.GetScoreMultiplier());
 
         Debug.Log("Total Score: " + score);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider2D)
+    {
+        if (collider2D.gameObject.TryGetComponent(out FuelPickup fuelPickup))
+        {
+            Debug.Log("Picked up fuel.");
+            float addFuelAmount = 10f;
+            fuelAmount += addFuelAmount;
+            fuelPickup.Destroy();
+        }
+    }
+
+    private void ConsumeFuel()
+    {
+        float fuelConsumption = 1f;
+        fuelAmount -= fuelConsumption * Time.deltaTime;
     }
 }
