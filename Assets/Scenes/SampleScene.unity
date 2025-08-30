@@ -527,7 +527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7658192972401475163, guid: 7e4696f1b806ae241b0e450f24422027, type: 3}
       propertyPath: ShapeModule.m_Rotation.x
-      value: 35
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7658192972401475163, guid: 7e4696f1b806ae241b0e450f24422027, type: 3}
       propertyPath: ShapeModule.m_Rotation.y
@@ -1397,7 +1397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7658192972401475163, guid: 7e4696f1b806ae241b0e450f24422027, type: 3}
       propertyPath: ShapeModule.m_Rotation.x
-      value: 35
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7658192972401475163, guid: 7e4696f1b806ae241b0e450f24422027, type: 3}
       propertyPath: ShapeModule.m_Rotation.y
