@@ -11,6 +11,11 @@ public class Lander : MonoBehaviour
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
     public event EventHandler OnCoinPickup;
+    public event EventHandler<OnLandedEventArgs> OnLanded;
+    public class OnLandedEventArgs : EventArgs
+    {
+        public int score;
+    }
 
     private Rigidbody2D landerRigidBody2D;
     private float fuelAmount = 10f;
@@ -100,6 +105,10 @@ public class Lander : MonoBehaviour
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.GetScoreMultiplier());
 
         Debug.Log("Total Score: " + score);
+        OnLanded?.Invoke(this, new OnLandedEventArgs 
+        {
+            score = score 
+        });
     }
 
     private void OnTriggerEnter2D(Collider2D collider2D)
