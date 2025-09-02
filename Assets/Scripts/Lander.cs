@@ -4,6 +4,8 @@ using System;
 
 public class Lander : MonoBehaviour
 {
+    public static Lander Instance { get; private set; }
+
     public event EventHandler OnUpForce;
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
@@ -15,6 +17,7 @@ public class Lander : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         landerRigidBody2D = GetComponent<Rigidbody2D>();
     }
 
