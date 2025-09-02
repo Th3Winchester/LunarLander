@@ -8,6 +8,7 @@ public class Lander : MonoBehaviour
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
+    public event EventHandler OnCoinPickup;
 
     private Rigidbody2D landerRigidBody2D;
     private float fuelAmount = 10f;
@@ -21,7 +22,7 @@ public class Lander : MonoBehaviour
     {
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
 
-        Debug.Log("Fuel Amount: " + fuelAmount);
+        //Debug.Log("Fuel Amount: " + fuelAmount);
         if (fuelAmount <= 0)
         {
             // No fuel
@@ -105,7 +106,14 @@ public class Lander : MonoBehaviour
             Debug.Log("Picked up fuel.");
             float addFuelAmount = 10f;
             fuelAmount += addFuelAmount;
-            fuelPickup.Destroy();
+            fuelPickup.DestroyObject();
+        }
+
+        if (collider2D.gameObject.TryGetComponent(out CoinPickup coinPickup))
+        {
+            Debug.Log("Picked up coin.");
+            OnCoinPickup?.Invoke(this, EventArgs.Empty);
+            coinPickup.DestroyObject();
         }
     }
 
