@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FuelPickup : MonoBehaviour
 {
-    public void Destroy()
+    public void DestroyObject()
     { 
         Destroy(gameObject);
     }
