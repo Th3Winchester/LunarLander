@@ -10,13 +10,16 @@ public class LandedUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private TextMeshProUGUI titleTextMesh;
     [SerializeField] private TextMeshProUGUI statsTextMesh;
-    [SerializeField] private Button restartButton;
+    [SerializeField] private TextMeshProUGUI nextButtonTextMesh;
+    [SerializeField] private Button nextButton;
+
+    private Action nextButtonClickAction;
 
     private void Awake()
     {
-        restartButton.onClick.AddListener(() =>
+        nextButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(0);
+            nextButtonClickAction();
         });
     }
 
@@ -32,9 +35,13 @@ public class LandedUI : MonoBehaviour
         if (e.landingType == Lander.LandingType.Success)
         {
             titleTextMesh.text = "Successful Landing";
+            nextButtonTextMesh.text = "CONTINUE";
+            nextButtonClickAction = GameManager.Instance.GoToNextlevel;
         } else
         {
             titleTextMesh.text = "<color=#ff00ff>Lander Crashed!</color>";
+            nextButtonTextMesh.text = "RETRY";
+            nextButtonClickAction = GameManager.Instance.RetryLevel;
         }
 
         statsTextMesh.text =
